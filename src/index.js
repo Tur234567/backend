@@ -1,5 +1,6 @@
 const http = require('http');
 const getUsers = require('./modules/users');
+//for save
 
 const server = http.createServer((request, response) => {
     const paramsFromUrl = new URLSearchParams(request.url);
@@ -56,8 +57,6 @@ const server = http.createServer((request, response) => {
 const os = require('os');
 const ifaces = os.networkInterfaces();
 const ip = (ifaces['Loopback Pseudo-Interface 1'])[1].address
-
-console.log(server);
 
 server.listen(3003, () => {
 console.log('Сервер запущен на '+ ip + ':3003');
