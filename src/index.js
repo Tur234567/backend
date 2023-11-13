@@ -1,12 +1,16 @@
 const http = require('http');
 const getUsers = require('./modules/users');
-let url = '';
+//for save
 
 const server = http.createServer((request, response) => {
+    const paramsFromUrl = new URLSearchParams(request.url);
+    const urlValue = paramsFromUrl.values();
+    const urlArray = Array.from(urlValue);
+    const urlResult = urlArray.toString();
     if (request.url === '/users') {
         response.status = 200;
         response.statusMessage = "OK";
-        response.header = "Content-Type: text/plain";
+        response.header = "Content-Type: application/json";
         response.write(getUsers());
         response.end();
         
@@ -21,12 +25,11 @@ const server = http.createServer((request, response) => {
         
         return
     }
-    url = request.url
-    if (request.url === '/hello='+url.substr(7)) { 
+    if (request.url === '/hello='+urlResult) { 
         response.status = 200;
         response.statusMessage = "OK";
         response.header = "Content-Type: text/plain";
-        response.write(`Hello, ${url.substr(7)}!`);
+        response.write(`Hello, ${urlResult}!`);
         response.end();
 
         return
@@ -51,6 +54,10 @@ const server = http.createServer((request, response) => {
     }
 });
 
+const os = require('os');
+const ifaces = os.networkInterfaces();
+const ip = (ifaces['Loopback Pseudo-Interface 1'])[1].address
+
 server.listen(3003, () => {
-console.log('Запущен');
+console.log('Сервер запущен на '+ ip + ':3003');
 });
